@@ -1,3 +1,6 @@
+# SystemC specific
+*.x
+
 # Prerequisites
 *.d
 

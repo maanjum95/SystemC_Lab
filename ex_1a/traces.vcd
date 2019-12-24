@@ -1,0 +1,437 @@
+$date
+     Dec 24, 2019       21:04:42
+$end
+
+$version
+ SystemC 2.3.1-Accellera --- Apr 25 2017 10:36:58
+$end
+
+$timescale
+     1 us
+$end
+
+$scope module SystemC $end
+$var wire   16  aaaaa  data_amount [15:0]  $end
+$var wire    1  aaaab  disc_packet       $end
+$var wire   32  aaaac  counter [31:0]  $end
+$upscope $end
+$enddefinitions  $end
+
+$comment
+All initial values are dumped below at time 0 sec = 0 timescale units.
+$end
+
+$dumpvars
+b0 aaaaa
+0aaaab
+b0 aaaac
+$end
+
+#3
+b1010100101 aaaaa
+b1010100101 aaaac
+
+#9
+b10110110110 aaaaa
+1aaaab
+b111110001 aaaac
+
+#32
+b1100111 aaaaa
+0aaaab
+b1100111 aaaac
+
+#58
+b10001010010 aaaaa
+b10001010010 aaaac
+
+#89
+b10110111001 aaaaa
+1aaaab
+b10110000 aaaac
+
+#117
+b1110100 aaaaa
+0aaaab
+b1110100 aaaac
+
+#144
+b100010011 aaaaa
+b100010011 aaaac
+
+#176
+b11110001 aaaaa
+b11110001 aaaac
+
+#202
+b1011101111 aaaaa
+b1011101111 aaaac
+
+#229
+b10101011001 aaaaa
+b10101011001 aaaac
+
+#255
+b10001101001 aaaaa
+1aaaab
+b1001001101 aaaac
+
+#264
+b110101011 aaaaa
+0aaaab
+b1011101010 aaaac
+
+#301
+b10000101110 aaaaa
+b10000101110 aaaac
+
+#325
+b1001000000 aaaaa
+b1110011110 aaaac
+
+#357
+b11101000 aaaaa
+b11101000 aaaac
+
+#361
+b1101101000 aaaaa
+b1111011000 aaaac
+
+#381
+b10011101010 aaaaa
+1aaaab
+b110000000 aaaac
+
+#393
+b1101110001 aaaaa
+0aaaab
+b1110001001 aaaac
+
+#401
+b1000101110 aaaaa
+b10011000111 aaaac
+
+#434
+b100000100 aaaaa
+b111101101 aaaac
+
+#441
+b1111111 aaaaa
+b110011010 aaaac
+
+#463
+b100111101 aaaaa
+b100111101 aaaac
+
+#488
+b10110100000 aaaaa
+b10110100000 aaaac
+
+#501
+b1101111000 aaaaa
+1aaaab
+b10000011010 aaaac
+
+#516
+b100001100 aaaaa
+0aaaab
+b1101100100 aaaac
+
+#519
+b10101100101 aaaaa
+1aaaab
+b1100001010 aaaac
+
+#556
+b111101101 aaaaa
+0aaaab
+b111101101 aaaac
+
+#571
+b1010100110 aaaaa
+b1011010001 aaaac
+
+#601
+b10110010001 aaaaa
+b10110010001 aaaac
+
+#621
+b10000000011 aaaaa
+1aaaab
+b1100111001 aaaac
+
+#635
+b1100000111 aaaaa
+0aaaab
+b10010011100 aaaac
+
+#653
+b1011010011 aaaaa
+b10101010011 aaaac
+
+#660
+b1011100010 aaaaa
+1aaaab
+b10010000001 aaaac
+
+#680
+b1110011 aaaaa
+0aaaab
+b1010011100 aaaac
+
+#716
+b1000001111 aaaaa
+b1000001111 aaaac
+
+#752
+b10011101101 aaaaa
+b10011101101 aaaac
+
+#774
+b1111111 aaaaa
+b1011011000 aaaac
+
+#812
+b1010001010 aaaaa
+b1010001010 aaaac
+
+#842
+b111011110 aaaaa
+b1000101010 aaaac
+
+#854
+b100101011 aaaaa
+b111101101 aaaac
+
+#859
+b10001011110 aaaaa
+b10110110101 aaaac
+
+#867
+b110000101 aaaaa
+1aaaab
+b10011000101 aaaac
+
+#877
+b100101000 aaaaa
+0aaaab
+b10011000001 aaaac
+
+#899
+b1111011110 aaaaa
+1aaaab
+b1000101101 aaaac
+
+#918
+b11000000 aaaaa
+0aaaab
+b11000000 aaaac
+
+#950
+b10101100010 aaaaa
+b10101100010 aaaac
+
+#968
+b100101111 aaaaa
+b10001110101 aaaac
+
+#999
+b1101111011 aaaaa
+b10001001110 aaaac
+
+#1037
+b101011110 aaaaa
+b101011110 aaaac
+
+#1052
+b110000001 aaaaa
+b110000001 aaaac
+
+#1066
+b10110101001 aaaaa
+b10110101001 aaaac
+
+#1097
+b10101000001 aaaaa
+1aaaab
+b1000000111 aaaac
+
+#1134
+b11101011 aaaaa
+0aaaab
+b11101011 aaaac
+
+#1156
+b10001101 aaaaa
+b10001101 aaaac
+
+#1191
+b10001110101 aaaaa
+b10001110101 aaaac
+
+#1221
+b1011011001 aaaaa
+b1111001010 aaaac
+
+#1257
+b1100111001 aaaaa
+b1100111001 aaaac
+
+#1264
+b1100001000 aaaaa
+b10101101111 aaaac
+
+#1286
+b10001000001 aaaaa
+1aaaab
+b1011011011 aaaac
+
+#1322
+b1100110000 aaaaa
+0aaaab
+b1100110000 aaaac
+
+#1355
+b10111000000 aaaaa
+b10111000000 aaaac
+
+#1366
+b101100000 aaaaa
+b10111010110 aaaac
+
+#1372
+b10000001000 aaaaa
+1aaaab
+b10100100010 aaaac
+
+#1390
+b101011101 aaaaa
+0aaaab
+b10001100011 aaaac
+
+#1420
+b1001011001 aaaaa
+b1100111000 aaaac
+
+#1430
+b1110100101 aaaaa
+b10110110001 aaaac
+
+#1459
+b1001101110 aaaaa
+b10010111001 aaaac
+
+#1496
+b1101100110 aaaaa
+b1111001001 aaaac
+
+#1507
+b11001011 aaaaa
+b1101001010 aaaac
+
+#1515
+b10010001011 aaaaa
+1aaaab
+b1001011010 aaaac
+
+#1552
+b1100111101 aaaaa
+0aaaab
+b1100111101 aaaac
+
+#1589
+b101000100 aaaaa
+b101000100 aaaac
+
+#1593
+b1110110111 aaaaa
+b10010000011 aaaac
+
+#1624
+b1110100100 aaaaa
+b10010000101 aaaac
+
+#1642
+b1100101000 aaaaa
+b10110010001 aaaac
+
+#1675
+b10011101101 aaaaa
+1aaaab
+b110110011 aaaac
+
+#1701
+b110111111 aaaaa
+0aaaab
+b110111111 aaaac
+
+#1720
+b1000110000 aaaaa
+b1000110000 aaaac
+
+#1733
+b10011001100 aaaaa
+b10101110110 aaaac
+
+#1763
+b1111111001 aaaaa
+1aaaab
+b111110010 aaaac
+
+#1795
+b1111111100 aaaaa
+0aaaab
+b1111111100 aaaac
+
+#1802
+b1001011000 aaaaa
+b10110000010 aaaac
+
+#1809
+b1011011100 aaaaa
+1aaaab
+b10010110000 aaaac
+
+#1818
+b1010010000 aaaaa
+b1110100010 aaaac
+
+#1832
+b110100111 aaaaa
+0aaaab
+b1110100101 aaaac
+
+#1867
+b110110100 aaaaa
+b110110100 aaaac
+
+#1897
+b11010111 aaaaa
+b11010111 aaaac
+
+#1906
+b10000100110 aaaaa
+b10000100110 aaaac
+
+#1924
+b10011010101 aaaaa
+1aaaab
+b1000001010 aaaac
+
+#1940
+b1110100010 aaaaa
+0aaaab
+b1111001100 aaaac
+
+#1946
+b11110111 aaaaa
+b10000001111 aaaac
+
+#1963
+b1100111110 aaaaa
+b10101001111 aaaac
+
+#1998
+b1011100100 aaaaa
+b10000011001 aaaac
+
