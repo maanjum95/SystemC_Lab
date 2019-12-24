@@ -5,10 +5,11 @@ SC_MODULE(counter) {
 	sc_in<bool> res;
 	sc_out<unsigned short int> cnt;
 
-private:
+public:
+	// public just to be able to add it to trace
 	// variable to store counter value
 	unsigned short int cnt_int;
-
+private:
 	// counter process
 	void count();
 
