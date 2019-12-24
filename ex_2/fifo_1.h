@@ -32,7 +32,11 @@ public:
 	SC_CTOR(fifo_1) : fifo_size(5) {
 
 		// register processes
-		// fill in here
+		SC_METHOD(do_read);
+		sensitive << clk.pos();
+
+		SC_METHOD(do_write);
+		sensitive << clk.pos();
 
 		SC_METHOD(set_flags);
 		sensitive << read_count << write_count;

@@ -5,7 +5,10 @@
 SC_MODULE(consum_1) {
 public:
 	// ports declaration
-	// fill in here
+	sc_in<bool> clk;
+	sc_in<int> dat2;
+	sc_out<bool> get;
+	sc_in<bool> f_empty;
 
 	// internal signal, public to enable tracing
 	sc_signal<bool> fetch;

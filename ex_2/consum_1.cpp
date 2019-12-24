@@ -3,7 +3,28 @@
 #include "consum_1.h"
 
 void consum_1::consumer() {
-	// fill in here
+	while (true) {
+		wait();
+
+		if (fetch.read() && !f_empty.read()) {
+			get.write(true);
+		} else {
+			get.write(false);
+		}
+
+		// data_valid is get one cycle delayed
+		// and with f_empty 
+		data_valid.write(get.read() && !f_empty.read());
+
+		if (data_valid.read()) {
+			consumed_data = dat2.read();
+			cout << sc_time_stamp() << ": consumer " << name() << " : "
+					<< consumed_data << " input" << endl;
+		} else {
+			consumed_data = 0;
+		}
+
+	}
 }
 
 // generate a pattern of read actions
