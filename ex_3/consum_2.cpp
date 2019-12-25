@@ -6,7 +6,46 @@
 #include <iomanip>
 
 void consum_2::consumer() {
-	// fill in here
+	unsigned int data_len;
+	unsigned char consum_data[16];
+
+	bool success;
+
+	while (true) {
+		// dynamic sensitivity to fetch_event sc_event
+		wait(fetch_event);
+
+		// generate random length b/w 1 to 16 bytes to fetch
+		data_len = 1 + rand() % 16;	
+		
+		// call the transaction
+		success = consum2fifo_port->read_fifo(consum_data, data_len);	
+		cout << endl << sc_time_stamp() << " " << name() 
+				<< " transaction is finished";
+		
+		if (success)
+			cout << " successfully" << endl;
+		else
+			cout << " not or only in part successfully." << endl;
+		
+		cout << "     " << name() << " read " << data_len << " bytes."
+				<< endl;
+
+		cout << endl << sc_time_stamp() << " " << name() 
+			<< " reading " << data_len << " bytes: 0x";
+
+		// switch to hexadecimal mode
+		cout << hex; 
+
+		// writing the read data
+		for (int i = 0; i < (int)data_len; i++) {
+			cout << std::setw(2) << std::setfill('0') << (int)*(consum_data + i) << " ";
+		}
+
+		// switching back to decimal
+		cout << dec << endl; 
+	}
+	
 }
 
 //*******===============================================================*******

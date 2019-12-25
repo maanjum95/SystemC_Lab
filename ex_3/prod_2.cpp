@@ -13,8 +13,8 @@ void prod_2::producer() {
 	bool success;
 
 	while(true) {
-		// fill in the appropriate statement for synchonization with
-		// the send_trigger process
+		// dynamic sensitivity to send_event sc_event
+		wait(send_event);
 
 		// generate random data of random lenght between 1 and 16 bytes
 		data_length = 1 + rand() % 16;
