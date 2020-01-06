@@ -26,7 +26,7 @@ void Cpu::processor_thread(void) {
 
 		if (do_logging) {
 			cout << endl << sc_time_stamp()
-				<< "CPU::processor_thread : transaction is finished";
+				<< "CPU::processor_thread : Transaction is finished";
 			
 			tlm_stat = payload.get_response_status();
 
@@ -35,7 +35,7 @@ void Cpu::processor_thread(void) {
 			else
 				cout << " unsuccessfully." << endl;
 			
-			cout << "CPU::processor_thread : PACKET DESCRIPTOR: " << m_packet_descriptor << endl;
+			cout << "CPU::processor_thread : Packet descriptor recieved: " << m_packet_descriptor << endl;
 		}
 
 		//*********************************************************
@@ -46,7 +46,7 @@ void Cpu::processor_thread(void) {
 		soc_address_t port_arr[] = {OUTPUT_0_ADDRESS, OUTPUT_1_ADDRESS, OUTPUT_2_ADDRESS, OUTPUT_3_ADDRESS};
 		int port_id = rand() % 4;
 		if (do_logging) {
-			cout << "CPU::processor_thread : SENDING TO OUPUT PORT " << port_id << endl;
+			cout << "CPU::processor_thread : Sending to output port: " << port_id << endl;
 		}
 
 		// starting transaction
@@ -57,7 +57,7 @@ void Cpu::processor_thread(void) {
 
 		if (do_logging) {
 			cout << endl << sc_time_stamp()
-				<< "CPU::processor_thread : transaction is finished";
+				<< "CPU::processor_thread : Transaction is finished";
 			
 			tlm_stat = payload.get_response_status();
 			
@@ -66,7 +66,7 @@ void Cpu::processor_thread(void) {
 			else
 				cout << " unsuccessfully." << endl;
 			
-			cout << endl << "CPU::processor_thread : Wrote to output port." << m_packet_descriptor << endl;
+			cout << endl << "CPU::processor_thread : Wrote to output port:" << port_id << ", the value: " << m_packet_descriptor << endl;
 		}	
 	}
 }
@@ -81,10 +81,10 @@ tlm_sync_enum Cpu::nb_transport_bw(tlm_generic_payload& transaction,
 	if (do_logging) {
 		if (phase == BEGIN_RESP) {
 			cout << endl << sc_time_stamp() 
-					<< " CPU::nb_transport_bw : callback called successfully." << endl;
+					<< " CPU::nb_transport_bw : Callback successfull." << endl;
 		} else {
 			cout << endl << sc_time_stamp()
-				<< " CPU::nb_transport_bw : failed to complete callback." << endl;
+				<< " CPU::nb_transport_bw : Callback failed." << endl;
 		}
 	}
 
@@ -132,10 +132,10 @@ void Cpu::startTransaction(tlm_command command, soc_address_t address,
 	if (do_logging) {
 		if (tlm_resp != TLM_UPDATED || phase != END_REQ) {
 			cout << endl << sc_time_stamp()
-				<< " CPU::processor_thread : transaction could not started " << endl;
+				<< " CPU::processor_thread : Transaction could not start." << endl;
 		} else {
 			cout << endl << sc_time_stamp()
-				<< " CPU::processor_thread : transaction started successfully" << endl;
+				<< " CPU::processor_thread : Transaction started successfully." << endl;
 		}	
 	}
 }
