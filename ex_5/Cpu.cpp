@@ -6,7 +6,7 @@ using namespace sc_core;
 using namespace tlm;
 
 ///  filename for reporting
-static const char *filename = "DmaChannel.cpp";
+static const char *filename = "Cpu.cpp";
 
 void Cpu::processor_thread(void) {
 	tlm_response_status tlm_stat;
@@ -35,7 +35,7 @@ void Cpu::processor_thread(void) {
 		// check status of response. 
 		// restart the loop if error is recieved.
 		if (tlm_stat == TLM_OK_RESPONSE) {
-			REPORT_ERROR(filename, __FUNCTION__, "Transaction finished successfully.");
+			REPORT_INFO(filename, __FUNCTION__, "Transaction finished successfully.");
 		} else {
 			REPORT_ERROR(filename, __FUNCTION__, "Transaction failed. Restarting loop...");
 			
@@ -68,7 +68,6 @@ void Cpu::processor_thread(void) {
 			REPORT_INFO(filename, __FUNCTION__, "Transaction finished successfully.");
 		} else {
 			REPORT_INFO(filename, __FUNCTION__, "Transaction failed.");
-			cout << "unsuccessfull" << endl;
 		}
 		
 		REPORT_INFO(filename, __FUNCTION__, "Wrote to output port: " << port_id << ", the value: " << this->m_packet_descriptor);
@@ -82,16 +81,12 @@ void Cpu::processor_thread(void) {
 tlm_sync_enum Cpu::nb_transport_bw(tlm_generic_payload& transaction,
 		tlm_phase& phase, sc_time& delay_time) {
 	
-	if (do_logging) {
-		if (phase == BEGIN_RESP) {
-			cout << endl << sc_time_stamp() 
-					<< " CPU::nb_transport_bw : Callback successfull." << endl;
-		} else {
-			cout << endl << sc_time_stamp()
-				<< " CPU::nb_transport_bw : Callback failed." << endl;
-		}
+	if (phase == BEGIN_RESP) {
+		REPORT_INFO(filename, __FUNCTION__, "Callback successfull.");
+	} else {
+		REPORT_ERROR(filename, __FUNCTION__, "Callback failed.");
 	}
-
+	
 	// increment delay time
 	delay_time += CLK_CYCLE_BUS;
 
@@ -124,14 +119,10 @@ void Cpu::startTransaction(tlm_command command, soc_address_t address,
 	// calling the transaction
 	tlm_resp = this->initiator_socket->nb_transport_fw(payload, phase, delay_time);
 
-	if (do_logging) {
-		if (tlm_resp != TLM_UPDATED || phase != END_REQ) {
-			cout << endl << sc_time_stamp()
-				<< " CPU::processor_thread : Transaction could not start." << endl;
-		} else {
-			cout << endl << sc_time_stamp()
-				<< " CPU::processor_thread : Transaction started successfully." << endl;
-		}	
+	if (tlm_resp != TLM_UPDATED || phase != END_REQ) {
+		REPORT_ERROR(filename, __FUNCTION__, "Transaction failed to start.");
+	} else {
+		REPORT_INFO(filename, __FUNCTION__, "Transaction started successfully.");
 	}
 }
 
