@@ -5,9 +5,6 @@
 using namespace sc_core;
 using namespace tlm;
 
-///  filename for reporting
-static const char *filename = "Cpu.cpp";
-
 void Cpu::processor_thread(void) {
 	tlm_response_status tlm_stat;
 	soc_address_t port_arr[] = {OUTPUT_0_ADDRESS, OUTPUT_1_ADDRESS, OUTPUT_2_ADDRESS, OUTPUT_3_ADDRESS};
@@ -35,16 +32,19 @@ void Cpu::processor_thread(void) {
 		// check status of response. 
 		// restart the loop if error is recieved.
 		if (tlm_stat == TLM_OK_RESPONSE) {
-			REPORT_INFO(filename, __FUNCTION__, "Transaction finished successfully.");
+			if (do_logging & LOG_CPU)
+					cout << sc_time_stamp() << " " << name() << ": Packet descriptor transaction finished successfully." << endl;
 		} else {
-			REPORT_ERROR(filename, __FUNCTION__, "Transaction failed. Restarting loop...");
+			if (do_logging & LOG_CPU)
+				cout << sc_time_stamp() << " " << name() << ": Packet descriptor transaction failed. Restarting processor thread loop..." << endl;
 			
 			// since the transaction failed. restarting the function loop
 			continue;
 		}
 		
 		// logging the recieved packet descriptor
-		REPORT_INFO(filename, __FUNCTION__, "Packet descriptor recieved" << this->m_packet_descriptor );
+		if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Packet descriptor recieved: " << this->m_packet_descriptor << endl;
 
 		//*********************************************************
 		// Forward the packet descriptor to an arbitrary port
@@ -53,7 +53,8 @@ void Cpu::processor_thread(void) {
 		// selecting a random port to send packet descriptor
 		port_id = rand() % 4;
 		
-		REPORT_INFO(filename, __FUNCTION__, "Send to output port " << port_id);
+		if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Sending packet descriptor to port: " << port_id << endl;
 
 		// starting transaction
 		startTransaction(TLM_WRITE_COMMAND, port_arr[port_id], (unsigned char *) &this->m_packet_descriptor, sizeof(this->m_packet_descriptor));
@@ -65,12 +66,14 @@ void Cpu::processor_thread(void) {
 		tlm_stat = this->payload.get_response_status();
 		
 		if (tlm_stat == TLM_OK_RESPONSE) {
-			REPORT_INFO(filename, __FUNCTION__, "Transaction finished successfully.");
+			if (do_logging & LOG_CPU)
+				cout << sc_time_stamp() << " " << name() << ": Output packet descriptor transaction finished successfully to port: " << port_id << endl;
 		} else {
-			REPORT_INFO(filename, __FUNCTION__, "Transaction failed.");
+			if (do_logging & LOG_CPU)
+				cout << sc_time_stamp() << " " << name() << ": Output packet descriptor transaction failed to port: " << port_id << endl;
 		}
-		
-		REPORT_INFO(filename, __FUNCTION__, "Wrote to output port: " << port_id << ", the value: " << this->m_packet_descriptor);
+		if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Send packet descriptor " << this->m_packet_descriptor << " to output port: " << port_id << endl;
 	}
 }
 
@@ -82,9 +85,11 @@ tlm_sync_enum Cpu::nb_transport_bw(tlm_generic_payload& transaction,
 		tlm_phase& phase, sc_time& delay_time) {
 	
 	if (phase == BEGIN_RESP) {
-		REPORT_INFO(filename, __FUNCTION__, "Callback successfull.");
+		if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Transport backward callback successfull." << endl;
 	} else {
-		REPORT_ERROR(filename, __FUNCTION__, "Callback failed.");
+		if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Transport backward callback failed." << endl;
 	}
 	
 	// increment delay time
@@ -120,9 +125,11 @@ void Cpu::startTransaction(tlm_command command, soc_address_t address,
 	tlm_resp = this->initiator_socket->nb_transport_fw(payload, phase, delay_time);
 
 	if (tlm_resp != TLM_UPDATED || phase != END_REQ) {
-		REPORT_ERROR(filename, __FUNCTION__, "Transaction failed to start.");
+		if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Transaction failed to start." << endl;
 	} else {
-		REPORT_INFO(filename, __FUNCTION__, "Transaction started successfully.");
+		if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Transaction started successfully." << endl;
 	}
 }
 
