@@ -171,6 +171,16 @@ private:
 	// end additional declarations for exercise 6
 	///////////////////////////////////////////////////////////////////////////////////
 
+	///////////////////////////////////////////////////////////////////////////////////
+	// Helper methods declared to streamline processor_thread
+	///////////////////////////////////////////////////////////////////////////////////
+	bool read_new_packet_descriptor();
+	bool read_packet_header_from_mem();
+	bool process_packet_header(int &port_id);
+	bool write_descriptor_to_discard_queue();
+	bool write_packet_header_to_mem();
+	bool write_descriptor_to_output_queue(int port_id);
+	
 public:
 	/**
 	 * print the load of the module
