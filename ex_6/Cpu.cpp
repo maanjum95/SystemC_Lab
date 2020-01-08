@@ -5,8 +5,6 @@
 using namespace sc_core;
 using namespace tlm;
 
-///  filename for reporting
-static const char *filename = "Cpu.cpp";
 
 bool Cpu::read_new_packet_descriptor() 
 {
@@ -28,15 +26,19 @@ bool Cpu::read_new_packet_descriptor()
     // check status of response. 
     // restart the loop if error is recieved.
     if (tlm_stat == TLM_OK_RESPONSE) {
-        REPORT_INFO(filename, __FUNCTION__, "Packet descriptor transaction finished successfully.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Packet descriptor transaction finished successfully." << endl;
     } else {
-        REPORT_ERROR(filename, __FUNCTION__, "Packet descriptor transaction failed. Restarting loop...");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Packet descriptor transaction failed. Restarting processor thread loop..." << endl;
         
         // since the transaction failed. restarting the function loop
         return false;
     }
     // logging the recieved packet descriptor
-    REPORT_INFO(filename, __FUNCTION__, "Packet descriptor recieved: " << this->m_packet_descriptor << " with size: " << this->m_packet_descriptor.size);
+    if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Packet descriptor recieved: " 
+            <<  this->m_packet_descriptor << " with packet size: " << this->m_packet_descriptor.size << endl;
     
     // sucess the new packet descriptor has been read
     return true;
@@ -64,15 +66,19 @@ bool Cpu::read_packet_header_from_mem()
     // check status of response
     // restart the loop if error is recieved.
     if (tlm_stat == TLM_OK_RESPONSE) {
-        REPORT_INFO(filename, __FUNCTION__, "IpPacket header transaction finished successfully.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": IpPacket header transaction finished successfully." << endl;
     } else {
-        REPORT_ERROR(filename, __FUNCTION__, "IpPacket header transaction failed. Restarting loop...");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": IpPacket header transaction failed. Restarting processor thread loop..." << endl;
         
         // since the transaction failed. restarting the function loop
         return false;
     }
     // logging the recieved IpPacket header
-    REPORT_INFO(filename, __FUNCTION__, "IpPacket header recieved at: " << this->m_packet_header.received << " with size: " << this->m_packet_header.data_size);
+    if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": IpPacket header recieved at: " 
+            << this->m_packet_header.received << " with size: " << this->m_packet_header.data_size << endl;
 
     // success packet header has been read successfully
     return true;
@@ -101,18 +107,21 @@ bool Cpu::process_packet_header(int &port_id)
     if (verifyHeaderIntegrity(this->m_packet_header)) {
         port_id = this->makeNHLookup (this->m_packet_header);
 
-        REPORT_INFO(filename, __FUNCTION__, "Packet needs to be forwarded to port: " << port_id);
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Packet needs to be forwarded to port: " << port_id << endl;
 
         if (decrementTTL(this->m_packet_header) > 0) {
             // updating the checksum after decrementing TTL  
             updateChecksum(this->m_packet_header);
 
-            REPORT_INFO(filename, __FUNCTION__, "Packet successfully processed. Ready to be forwarded.");
+            if (do_logging & LOG_CPU)
+			    cout << sc_time_stamp() << " " << name() << ": Packet successfully processed. Ready to be forwarded." << endl;
 
             // suceess the packet has been processed and can now be forwarded.
             return true;
         } else {
-            REPORT_ERROR(filename, __FUNCTION__, "Time Excedded. TTL < 1. Packet will be discarded.");
+            if (do_logging & LOG_CPU)
+			    cout << sc_time_stamp() << " " << name() << ": Time Excedded. TTL < 1. Packet will be discarded." << endl;
             
             this->write_descriptor_to_discard_queue();
 
@@ -120,7 +129,8 @@ bool Cpu::process_packet_header(int &port_id)
             return false;
         }
     } else {
-        REPORT_ERROR(filename, __FUNCTION__, "Header Integrity failed. Packet will be discarded.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Header Integrity failed. Packet will be discarded." << endl;
         
         this->write_descriptor_to_discard_queue();
 
@@ -133,7 +143,8 @@ bool Cpu::write_descriptor_to_discard_queue()
 {
     tlm_response_status tlm_stat;
 
-    REPORT_INFO(filename, __FUNCTION__, "Writing packet descriptor to discard queue: " << this->m_packet_descriptor);
+    if (do_logging & LOG_CPU)
+		cout << sc_time_stamp() << " " << name() << ": Writing packet descriptor " << this->m_packet_descriptor << " to discard queue." << endl;
 
     // starting transaction
     startTransaction(TLM_WRITE_COMMAND, DISCARD_QUEUE_ADDRESS, (unsigned char *) &this->m_packet_descriptor, sizeof(this->m_packet_descriptor));
@@ -145,15 +156,18 @@ bool Cpu::write_descriptor_to_discard_queue()
     tlm_stat = this->payload.get_response_status();
     
     if (tlm_stat == TLM_OK_RESPONSE) {
-        REPORT_INFO(filename, __FUNCTION__, "Transaction finished successfully.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Discard queue transaction finished successfully." << endl;
     } else {
-        REPORT_INFO(filename, __FUNCTION__, "Transaction failed.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Discard queue transaction failed." << endl;
         
         // Failed write to discard queue
         return false;
     }
     
-    REPORT_INFO(filename, __FUNCTION__, "Wrote to discard queue: " << this->m_packet_descriptor);
+    if (do_logging & LOG_CPU)
+		cout << sc_time_stamp() << " " << name() << ": Wrote packet descriptor " << this->m_packet_descriptor <<" to discard queue." << endl;
 
     // Success wrote to discard queue
     return true;
@@ -163,7 +177,8 @@ bool Cpu::write_packet_header_to_mem()
 {
     tlm_response_status tlm_stat;
 
-    REPORT_INFO(filename, __FUNCTION__, "Writing packet header back to memory." );
+    if (do_logging & LOG_CPU)
+		cout << sc_time_stamp() << " " << name() << ": Writing processed packet header back to memory." << endl;
 
     // starting transaction
     this->startTransaction(TLM_WRITE_COMMAND, this->m_packet_descriptor.baseAddress,
@@ -177,15 +192,18 @@ bool Cpu::write_packet_header_to_mem()
     tlm_stat = this->payload.get_response_status();
     
     if (tlm_stat == TLM_OK_RESPONSE) {
-        REPORT_INFO(filename, __FUNCTION__, "Transaction finished successfully.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Packet header transaction finished successfully." << endl;
     } else {
-        REPORT_INFO(filename, __FUNCTION__, "Transaction failed.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Packet header transaction failed." << endl;
 
         // failed to write packet back to memory
         return false;
     }
     
-    REPORT_INFO(filename, __FUNCTION__, "Wrote packet header back to memory.");
+    if (do_logging & LOG_CPU)
+		cout << sc_time_stamp() << " " << name() << ": Wrote packet header back to memory." << endl;
 
     // successfully wrote packet back to memory
     return true;
@@ -196,7 +214,8 @@ bool Cpu::write_descriptor_to_output_queue(int port_id)
     tlm_response_status tlm_stat;
     soc_address_t port_arr[] = {OUTPUT_0_ADDRESS, OUTPUT_1_ADDRESS, OUTPUT_2_ADDRESS, OUTPUT_3_ADDRESS};
 
-    REPORT_INFO(filename, __FUNCTION__, "Writing packet descriptor to output queue id: " << port_id);
+    if (do_logging & LOG_CPU)
+		cout << sc_time_stamp() << " " << name() << ": Writing packet descriptor to output queue: " << port_id << endl;
 
     // starting transaction
     startTransaction(TLM_WRITE_COMMAND, port_arr[port_id], (unsigned char *) &this->m_packet_descriptor, sizeof(this->m_packet_descriptor));
@@ -208,15 +227,18 @@ bool Cpu::write_descriptor_to_output_queue(int port_id)
     tlm_stat = this->payload.get_response_status();
     
     if (tlm_stat == TLM_OK_RESPONSE) {
-        REPORT_INFO(filename, __FUNCTION__, "Transaction finished successfully.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Packet descriptor transaction finished successfully." << endl;
     } else {
-        REPORT_INFO(filename, __FUNCTION__, "Transaction failed.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Packet descriptor transaction failed." << endl;
 
         // failed to write the packet descrptor
         return false;
     }
     
-    REPORT_INFO(filename, __FUNCTION__, "Wrote packet descriptor to output queue id: " << port_id);
+    if (do_logging & LOG_CPU)
+		cout << sc_time_stamp() << " " << name() << ": Wrote packet descriptor to output queue id: " << port_id << endl;
 
     // successfully wrote to the output queue of given port_id
     return true;
@@ -267,9 +289,11 @@ tlm_sync_enum Cpu::nb_transport_bw(tlm_generic_payload& transaction,
 		tlm_phase& phase, sc_time& delay_time) {
 	
 	if (phase == BEGIN_RESP) {
-		REPORT_INFO(filename, __FUNCTION__, "Callback successfull.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Transport backward callback successfull" << endl;
 	} else {
-		REPORT_ERROR(filename, __FUNCTION__, "Callback failed.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Transport backward callback failed." << endl;
 	}
 	
 	// increment delay time
@@ -305,9 +329,11 @@ void Cpu::startTransaction(tlm_command command, soc_address_t address,
 	tlm_resp = this->initiator_socket->nb_transport_fw(payload, phase, delay_time);
 
 	if (tlm_resp != TLM_UPDATED || phase != END_REQ) {
-		REPORT_ERROR(filename, __FUNCTION__, "Transaction failed to start.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Transaction failed to start." << endl;
 	} else {
-		REPORT_INFO(filename, __FUNCTION__, "Transaction started successfully.");
+        if (do_logging & LOG_CPU)
+			cout << sc_time_stamp() << " " << name() << ": Transaction started successfully." << endl;
 	}
 }
 
