@@ -14,7 +14,9 @@ using namespace std;
 
 //############# COMPLETE THE FOLLOWING SECTION
 // complete constructor parameters
-Accelerator::Accelerator() :
+Accelerator::Accelerator(sc_module_name instname, int lkupdelay) :
+	 	sc_module(instname),
+		ACC_IP_LOOKUP_CYCLES(lkupdelay),
 	// enter the required initializationes here
 
 //############# UP TO HERE

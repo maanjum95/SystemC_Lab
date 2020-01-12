@@ -84,6 +84,9 @@ private:
 	/// nonblocking forward path callback
 	tlm_sync_enum nb_transport_fw(tlm_generic_payload& payload,
 			tlm_phase& phase, sc_time& delay);
+
+	/// Macro
+	SC_HAS_PROCESS(Accelerator);
 public:
 	/**
 	 * print the load of the module
@@ -93,6 +96,7 @@ public:
 	//############# COMPLETE THE FOLLOWING SECTION
 	// Write down the Declaration of the Constructor of the Parameterized Accelerator module
 	//############# UP TO HERE
+	Accelerator(sc_module_name instname, int lkupdelay);
 
 	/** Destructor, frees memory allocated for irq. */
 	~Accelerator() {delete[] irq;}

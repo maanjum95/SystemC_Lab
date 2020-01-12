@@ -159,6 +159,8 @@ int sc_main(int argc, char *argv[]) {
 	//############# COMPLETE THE FOLLOWING SECTION
 	// Write down the Instantiation of the Parameterized
 	// Accelerator module with IP Lookup time as parameter
+		// the number of required clock cycles for the accelerator to 40.
+		accelerator = new Accelerator("accelerator", 40); 
 	//############# UP TO HERE
 	}
 
