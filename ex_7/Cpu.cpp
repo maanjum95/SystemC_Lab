@@ -170,7 +170,7 @@ void Cpu::processor_thread(void) {
                     cout << sc_time_stamp() << " " << name() << ": Packet successfully processed. Ready to be forwarded." << endl;
                 
                 discard_packet = false;
-            } else {
+            } else {                
                 if (do_logging & LOG_CPU)
                     cout << sc_time_stamp() << " " << name() << ": Time Excedded. TTL < 1. Packet will be discarded." << endl;
                 
