@@ -73,6 +73,9 @@ private:
 	/// Time spent with computation.
 	sc_time total_processing_time;
 
+	/// SC_HAS_PROCESS macro since SC_CTOR can not be used
+	SC_HAS_PROCESS(Accelerator);
+
 private:
 	/// the processing thread
 	void accelerator_thread();
@@ -84,9 +87,6 @@ private:
 	/// nonblocking forward path callback
 	tlm_sync_enum nb_transport_fw(tlm_generic_payload& payload,
 			tlm_phase& phase, sc_time& delay);
-
-	/// Macro
-	SC_HAS_PROCESS(Accelerator);
 public:
 	/**
 	 * print the load of the module
@@ -95,8 +95,8 @@ public:
 
 	//############# COMPLETE THE FOLLOWING SECTION
 	// Write down the Declaration of the Constructor of the Parameterized Accelerator module
+	Accelerator(sc_module_name instname, unsigned int lookup_cycles);
 	//############# UP TO HERE
-	Accelerator(sc_module_name instname, int lkupdelay);
 
 	/** Destructor, frees memory allocated for irq. */
 	~Accelerator() {delete[] irq;}
