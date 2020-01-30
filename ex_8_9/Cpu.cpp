@@ -448,6 +448,9 @@ void Cpu::startTransaction(tlm_command command, soc_address_t address,
         if (do_logging & LOG_CPU)
 			cout << sc_time_stamp() << " " << name() << ": Transaction started successfully." << endl;
 	}
+
+    // wait for the updated delay value
+	wait(delay_time);
 }
 
 unsigned int Cpu::instances = 0;
